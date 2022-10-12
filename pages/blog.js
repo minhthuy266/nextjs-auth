@@ -11,6 +11,15 @@ export async function getServerSideProps(context) {
 
   console.log(session);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/api/auth/signin?callbackUrl=http://localhost:3000/blog`,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       blogsdata: session
