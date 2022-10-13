@@ -16,13 +16,26 @@ export const authOptions = {
 
   database: process.env.DB_URL,
   session: {
-    jwt: true,
+    strategy: "jwt",
   },
 
   adapter: MongoDBAdapter(clientPromise),
 
   jwt: {
     secret: "thuynm266",
+  },
+
+  callbacks: {
+    async jwt(token, user) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session(session, token) {
+      session.user.id = token.id;
+      return session;
+    },
   },
 };
 
